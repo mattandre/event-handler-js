@@ -4,11 +4,11 @@
  * @param {Array.<string>} events - An array of event names that this handler will use.
  * @constructor
  */
-EventHandler = function(entity, events){
+var EventHandler = function(entity, events) {
 	this.entity = entity;
-	this.events = {"all": []};
-	if(events){
-		for(var i = 0, l = events.length; i < l; i++){
+	this.events = { 'all': [] };
+	if (events) {
+		for (var i = 0, l = events.length; i < l; i++) {
 			this.events[events[i]] = [];
 		}
 	}
@@ -18,7 +18,7 @@ EventHandler = function(entity, events){
 /**
  * Aliases triggering and listening methods onto the entity
  */
-EventHandler.prototype.alias = function(){
+EventHandler.prototype.alias = function() {
 	this.entity.on      = $.proxy(this.on, this);
 	this.entity.once    = $.proxy(this.once, this);
 	this.entity.off     = $.proxy(this.off, this);
@@ -32,8 +32,10 @@ EventHandler.prototype.alias = function(){
  * @param {Object} context - The scope that will be applied to the action.
  * @return {Object} The entity the handler is attached to.
  */
-EventHandler.prototype.on = function(eventName, action, context){
-	this.events[eventName] || (this.events[eventName] = []);
+EventHandler.prototype.on = function(eventName, action, context) {
+	if (!(eventName in this.events)) {
+		this.events[eventName] = [];
+	}
 	this.events[eventName].push({ action: action, context: context || this.entity });
 	return this.entity;
 };
@@ -45,9 +47,9 @@ EventHandler.prototype.on = function(eventName, action, context){
  * @param {Object} context - The scope that will be applied to the action.
  * @return {Object} The entity the handler is attached to.
  */
-EventHandler.prototype.once = function(eventName, action, context){
+EventHandler.prototype.once = function(eventName, action, context) {
 	var self = this,
-			once = function(){
+			once = function() {
 				self.off(eventName, once);
 				action.apply(this, arguments);
 			};
@@ -62,20 +64,20 @@ EventHandler.prototype.once = function(eventName, action, context){
  * @param {Object} context - The scope for the action.
  * @return {Object} The entity the handler is attached to.
  */
-EventHandler.prototype.off = function(eventName, action, context){
+EventHandler.prototype.off = function(eventName, action, context) {
 	if (!action && !context) {
-		if(!eventName){
+		if (!eventName) {
 			this.clear();
-		}else{
-			 this.events[eventName] = [];
+		} else {
+			this.events[eventName] = [];
 		}
 		return this.entity;
 	}
 	var events = this.events[eventName],
 			retain = [], ev;
-	for(var i = 0, l = events.length; i < l; i++){
+	for (var i = 0, l = events.length; i < l; i++) {
 		ev = events[i];
-		if((action && action !== ev.action && action !== ev.action._action) || 
+		if ((action && action !== ev.action && action !== ev.action._action) || 
 				(context && context !== ev.context)) {
 			retain.push(ev);
 		}
@@ -90,10 +92,16 @@ EventHandler.prototype.off = function(eventName, action, context){
  * @param {Array} args - A list to be passed to the trigger listeners.
  * @return {Object} The entity the handler is attached to.
  */
-EventHandler.prototype.trigger = function(eventName, args){
-	this.events[eventName] && this.triggerEvents(this.events[eventName], args || []);
-	this.events.all && this.triggerEvents(this.events.all, args || [])
-	return this.entity
+EventHandler.prototype.trigger = function(eventName, args) {
+	if (eventName in this.events) {
+		this.triggerEvents(this.events[eventName], args || []);
+	}
+
+	if ('all' in this.events) {
+		this.triggerEvents(this.events.all, args || []);
+	}
+
+	return this.entity;
 };
 
 /**
@@ -104,17 +112,43 @@ EventHandler.prototype.trigger = function(eventName, args){
  */
 EventHandler.prototype.triggerEvents = function(events, args) {
 	var ev,
-			i = -1, 
-			l = events.length, 
-			a1 = args[0], 
-			a2 = args[1], 
-			a3 = args[2];
+	i = -1, 
+	l = events.length, 
+	a1 = args[0], 
+	a2 = args[1], 
+	a3 = args[2];
+
 	switch (args.length) {
-		case 0: while (++i < l) (ev = events[i]).action.call(ev.context); return;
-		case 1: while (++i < l) (ev = events[i]).action.call(ev.context, a1); return;
-		case 2: while (++i < l) (ev = events[i]).action.call(ev.context, a1, a2); return;
-		case 3: while (++i < l) (ev = events[i]).action.call(ev.context, a1, a2, a3); return;
-		default: while (++i < l) (ev = events[i]).action.apply(ev.context, args);
+		case 0: 
+			while (++i < l) {
+				ev = events[i];
+				ev.action.call(ev.context);
+			}
+			break;
+		case 1: 
+			while (++i < l) {
+				ev = events[i];
+				ev.action.call(ev.context, a1);
+			}
+			break;
+		case 2: 
+			while (++i < l) {
+				ev = events[i];
+				ev.action.call(ev.context, a1, a2);
+			}
+			break;
+		case 3: 
+			while (++i < l) {
+				ev = events[i];
+				ev.action.call(ev.context, a1, a2, a3);
+			}
+			break;
+		default: 
+			while (++i < l) {
+				ev = events[i];
+				ev.action.apply(ev.context, args);
+			}
+			break;
 	}
 };
 
@@ -122,8 +156,10 @@ EventHandler.prototype.triggerEvents = function(events, args) {
  * Helper method for clearing all events.
  * @private
  */
-EventHandler.prototype.clear = function(){
-	for(var i in this.events){
-		this.events[i] = [];
+EventHandler.prototype.clear = function() {
+	for (var key in this.events) {
+		if (this.events.hasOwnProperty(key)) {
+			this.events[key] = [];
+	   	}		
 	}
 };

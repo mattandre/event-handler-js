@@ -1,0 +1,22 @@
+{
+  "name": "event-handler-js",
+  "description": "A Event Handler that attaches itself to Objects for JavaScript.",
+  "version": "0.0.1",
+  "main": "dist/eventhandler.js",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Matt Andre",
+      "email": "matt@mattandre.me"
+    }
+  ],
+  "ignore": [
+    "**/.*",
+    "dist",
+    "spec",
+    "Gruntfile.js",
+    "bower.json",
+    "bower",
+    "*.md"
+  ]
+}
