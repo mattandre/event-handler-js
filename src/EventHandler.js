@@ -163,3 +163,8 @@ EventHandler.prototype.clear = function() {
 	   	}		
 	}
 };
+
+/**
+ * Global Variable Exports
+ */
+window.EventHandler = EventHandler;
