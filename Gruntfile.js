@@ -3,11 +3,8 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		concat: {
-			options: {
-				separator: ';',
-			},
 			dist: {
-				src: [ 'includes/intro.js', 'src/EventHandler.js', 'includes/outro.js' ],
+				src: [ 'includes/intro.js', 'src/*.js', 'includes/outro.js' ],
 				dest: 'dist/<%= pkg.name %>.js',
 			},
 		},
