@@ -1,4 +1,4 @@
-(function (modules) {
+exports.EventHandler = (function (modules) {
 
 	/**
 	 * EventHandler - Handles triggering and listening to the events of an entity.
@@ -149,12 +149,6 @@
 			}
 		}
 	};
-
-	/**
-	 * Variable Exports
-	 */
-	modules.EventHandler = EventHandler;
-	window.EventHandler = EventHandler;
 
 	return EventHandler;
 

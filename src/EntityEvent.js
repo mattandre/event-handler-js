@@ -1,4 +1,4 @@
-(function (modules) {
+exports.EntityEvent = (function () {
 
 	var EntityEvent = function (event, handler, data) {
 		this.event = event;
@@ -25,11 +25,6 @@
 
 		return undefined;
 	};
-
-	/**
-	 * Variable Exports
-	 */
-	modules.EntityEvent = EntityEvent;
 
 	return EntityEvent;
 
