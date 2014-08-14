@@ -103,16 +103,19 @@ EventHandler.prototype.off = function (eventName, action, context) {
 /**
  * Trigger all listeners for the provided eventName.
  * @param {string} eventName - Name of event to trigger listeners for.
- * @param {Array} args - A list to be passed to the trigger listeners.
+ * @param {?} argn - The nth value to be passed to the trigger listeners.
  * @return {Object} The entity the handler is attached to.
  */
-EventHandler.prototype.trigger = function (eventName, args) {
+EventHandler.prototype.trigger = function (eventName) {
+	var shift = [].shift;
+	shift.apply(arguments);
+
 	if (eventName in this.events) {
-		this.triggerEvents(this.events[eventName], args || []);
+		this.triggerEvents(this.events[eventName], arguments);
 	}
 
 	if ('all' in this.events) {
-		this.triggerEvents(this.events.all, args || []);
+		this.triggerEvents(this.events.all, arguments);
 	}
 
 	return this.entity;
@@ -125,44 +128,8 @@ EventHandler.prototype.trigger = function (eventName, args) {
  * @private
  */
 EventHandler.prototype.triggerEvents = function (events, args) {
-	var ev,
-	i = -1,
-	l = events.length,
-	a1 = args[0],
-	a2 = args[1],
-	a3 = args[2];
-
-	switch (args.length) {
-		case 0:
-			while (++i < l) {
-				ev = events[i];
-				ev.action.call(ev.context);
-			}
-			break;
-		case 1:
-			while (++i < l) {
-				ev = events[i];
-				ev.action.call(ev.context, a1);
-			}
-			break;
-		case 2:
-			while (++i < l) {
-				ev = events[i];
-				ev.action.call(ev.context, a1, a2);
-			}
-			break;
-		case 3:
-			while (++i < l) {
-				ev = events[i];
-				ev.action.call(ev.context, a1, a2, a3);
-			}
-			break;
-		default:
-			while (++i < l) {
-				ev = events[i];
-				ev.action.apply(ev.context, args);
-			}
-			break;
+	for (var i = 0, length = events.length; i < length; i++) {
+		events[i].action.apply(events[i].context, args);
 	}
 };
 
