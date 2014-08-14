@@ -46,7 +46,7 @@ EventHandler.prototype.alias = function () {
  * @return {Object} The entity the handler is attached to.
  */
 EventHandler.prototype.on = function (eventName, action, context) {
-	if (!(eventName in this.events)) {
+	if (!this.events.hasOwnProperty(eventName)) {
 		this.events[eventName] = [];
 	}
 	this.events[eventName].push({ action: action, context: context || this.entity });
@@ -110,11 +110,11 @@ EventHandler.prototype.trigger = function (eventName) {
 	var shift = [].shift;
 	shift.apply(arguments);
 
-	if (eventName in this.events) {
+	if (this.events.hasOwnProperty(eventName)) {
 		this.triggerEvents(this.events[eventName], arguments);
 	}
 
-	if ('all' in this.events) {
+	if (this.events.hasOwnProperty('all')) {
 		this.triggerEvents(this.events.all, arguments);
 	}
 
