@@ -19,7 +19,8 @@
 
     "predef"        : [  // Extra globals
         "notify",
-        "grunt"
+        "grunt",
+        "exports"
     ],
 
 

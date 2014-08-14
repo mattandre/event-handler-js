@@ -1,1 +1,2 @@
-(function (window, undefined) {
+(function (global, undefined) {
+	var exports = {};
