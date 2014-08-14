@@ -1,8 +1,8 @@
 {
-  "name": "event-handler-js",
+  "name": "event-handler",
   "description": "A Event Handler that attaches itself to Objects for JavaScript.",
   "version": "0.0.1",
-  "main": "dist/eventhandler.js",
+  "main": "dist/event-handler.js",
   "license": "MIT",
   "authors": [
     {

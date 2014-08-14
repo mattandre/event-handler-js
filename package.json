@@ -1,5 +1,5 @@
 {
-  "name": "event-handler-js",
+  "name": "event-handler",
   "description": "A Event Handler that attaches itself to Objects for JavaScript.",
   "version": "0.0.1",
   "homepage": "https://mattandre.github.io/event-handler-js",
