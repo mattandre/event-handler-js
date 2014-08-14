@@ -1,12 +1,12 @@
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		concat: {
 			dist: {
-				src: [ 'includes/intro.js', 'src/*.js', 'includes/outro.js' ],
-				dest: 'dist/<%= pkg.name %>.js',
-			},
+				src: ['includes/intro.js', 'src/*.js', 'includes/outro.js'],
+				dest: 'dist/<%= pkg.name %>.js'
+			}
 		},
 		uglify: {
 			options: {
@@ -25,10 +25,10 @@ module.exports = function(grunt) {
 		},
 		jsonlint: {
 			pkg: {
-				src: [ 'package.json' ]
+				src: ['package.json']
 			},
 			bower: {
-				src: [ 'bower.json' ]
+				src: ['bower.json']
 			}
 		},
 		jshint: {
@@ -47,19 +47,19 @@ module.exports = function(grunt) {
 		},
 		jscs: {
 			src: 'src/**/*.js',
-			grunt: 'Gruntfile.js',
+			grunt: 'Gruntfile.js'
 		},
 		watch: {
 			scripts: {
-				files: [ 'src/**/*.js' ],
-				tasks: [ 'dev' ]
-			},
+				files: ['src/**/*.js'],
+				tasks: ['dev']
+			}
 		}
 	});
 
-	require('load-grunt-tasks')(grunt, { pattern: [ 'grunt-*', '!grunt-template-jasmine-requirejs' ] });
+	require('load-grunt-tasks')(grunt, { pattern: ['grunt-*', '!grunt-template-jasmine-requirejs'] });
 
-	grunt.registerTask('dev', [ 'jsonlint', 'jshint', 'jscs' ] );
-	grunt.registerTask('build', [ 'dev', 'concat', 'uglify' ]);
-	grunt.registerTask('default', [ 'build' ]);
+	grunt.registerTask('dev', ['jsonlint', 'jshint', 'jscs']);
+	grunt.registerTask('build', ['dev', 'concat', 'uglify']);
+	grunt.registerTask('default', ['build']);
 };
