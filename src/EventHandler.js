@@ -19,10 +19,23 @@ var EventHandler = function (entity, events) {
  * Aliases triggering and listening methods onto the entity
  */
 EventHandler.prototype.alias = function () {
-	this.entity.on      = $.proxy(this.on, this);
-	this.entity.once    = $.proxy(this.once, this);
-	this.entity.off     = $.proxy(this.off, this);
-	this.entity.trigger = $.proxy(this.trigger, this);
+	var self = this;
+
+	this.entity.on = function (eventName, action, context) {
+		self.on(eventName, action, context);
+	};
+
+	this.entity.once = function (eventName, action, context) {
+		self.once(eventName, action, context);
+	};
+
+	this.entity.off = function (eventName, action, context) {
+		self.off(eventName, action, context);
+	};
+
+	this.entity.trigger = function (eventName, args) {
+		self.trigger(eventName, args);
+	};
 };
 
 /**
