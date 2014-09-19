@@ -1,9 +1,10 @@
-exports.EntityEvent = (function () {
+exports.EntityEvent = (function (modules, undefined) {
 
 	var EntityEvent = function (event, handler, data) {
 		this.event = event;
 		this.handler = handler;
 		this.data = typeof data === 'object' ? data : {};
+		this.propagate = true;
 	};
 
 	EntityEvent.prototype.getEvent = function () {
@@ -24,6 +25,14 @@ exports.EntityEvent = (function () {
 		}
 
 		return undefined;
+	};
+
+	EntityEvent.prototype.isPropagated = function () {
+		return this.setPropagate;
+	};
+
+	EntityEvent.prototype.stopPropagation = function () {
+		this.propagate = false;
 	};
 
 	return EntityEvent;
